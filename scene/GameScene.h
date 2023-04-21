@@ -44,7 +44,9 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-
+	//BG()
+	uint32_t textureHandleBG_ = 0;
+	Sprite* spriteBG_ = nullptr;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

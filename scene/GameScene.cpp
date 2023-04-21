@@ -1,22 +1,23 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-
+//コンストラクト
 GameScene::GameScene() {}
-
-GameScene::~GameScene() {}
-
+//デストラクタ
+GameScene::~GameScene() { delete spriteBG_; }
+//初期化
 void GameScene::Initialize() {
-
+	textureHandleBG_ = TextureManager::Load("bg.jpg");
+	spriteBG_ = Sprite::Create(textureHandleBG_, {0, 0});
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 }
-
+//更新
 void GameScene::Update() {}
-
+//表示
 void GameScene::Draw() {
-
+	
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
@@ -26,6 +27,7 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
+	spriteBG_->Draw();
 	/// </summary>
 
 	// スプライト描画後処理

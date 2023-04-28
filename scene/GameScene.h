@@ -22,6 +22,12 @@ class GameScene {
 	uint32_t texttureHandleStage_ = 0;
 	Model* modelStage_ = nullptr;
 	WorldTransform worldTransformStage_;
+	//
+	uint32_t textureHandlePlayer_ = 0;
+	Model* modelPlayer_ = nullptr;
+	WorldTransform worldTransformPlayer_;
+
+	void PlayerUpdate();
 
 public: // メンバ関数
 	/// <summary>

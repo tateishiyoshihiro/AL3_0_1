@@ -2,7 +2,6 @@
 
 #include "DirectXCommon.h"
 #include "WinApp.h"
-#include <imgui.h>
 
 class ImGuiManager {
 public:

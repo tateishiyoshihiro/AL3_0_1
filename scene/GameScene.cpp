@@ -1,14 +1,18 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "MathUtilityForText.h"
+#include"MathUtilityForText.h"
+//#include"MathUtilityForText.h"
+
 //コントラスト
 GameScene::GameScene() { 
 	delete spriteBG_;//BG
 	delete modelStage_;//Stage
 }
 //デストラクタ
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete modelPlayer_;
+}
 
 void GameScene::Initialize() {
 	//BG(2Dスプライト)
@@ -34,13 +38,50 @@ void GameScene::Initialize() {
 	//変換行列を定数バッファに転送
 	worldTransformStage_.TransferMatrix();
 
+	//
+	textureHandlePlayer_ = TextureManager::Load("player.png");
+	modelPlayer_ = Model::Create();
+	worldTransformPlayer_.scale_ = {0.5f, 0.5f, 0.5f};
+	worldTransformPlayer_.Initialize();
+
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
 }
 //更新
-void GameScene::Update() {}
+void GameScene::Update() { 
+	PlayerUpdate();
+}
+//
+//
+//
+ //プレイヤー更新
+void GameScene::PlayerUpdate() {
+	//移動
+	
+	//右へ移動
+	if (input_->PushKey(DIK_RIGHT)) {
+	worldTransformPlayer_.translation_.x+=0.1f;
+	}
+	if (worldTransformPlayer_.translation_.x >= 4) {
+	worldTransformPlayer_.translation_.x = 4;
+	}
+	//左へ移動
+	if (input_->PushKey(DIK_LEFT)) {
+	worldTransformPlayer_.translation_.x -= 0.1f;
+	}
+	if (worldTransformPlayer_.translation_.x <= -4) {
+	worldTransformPlayer_.translation_.x = -4;
+	}
+	//変換行列を更新
+	worldTransformPlayer_.matWorld_ = MakeAffineMatrix(
+	    worldTransformPlayer_.scale_, worldTransformPlayer_.rotation_,
+	    worldTransformPlayer_.translation_);
+	//変換行列を定数バッファに転送
+	worldTransformPlayer_.TransferMatrix();
+}
+
 //描画
 void GameScene::Draw() {
 
@@ -72,6 +113,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	//ステージ
 	modelStage_->Draw(worldTransformStage_, viewProjection_, texttureHandleStage_);
+	modelPlayer_->Draw(worldTransformPlayer_, viewProjection_, textureHandlePlayer_);
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理

@@ -26,8 +26,14 @@ class GameScene {
 	uint32_t textureHandlePlayer_ = 0;
 	Model* modelPlayer_ = nullptr;
 	WorldTransform worldTransformPlayer_;
+	// ビーム
+	uint32_t textureHandleBeam_ = 0;
+	Model* modelBeam_ = nullptr;
+	WorldTransform worldTransformBeam_;
 
 	void PlayerUpdate();
+	void BeamUpdate();
+	int beamFlag_ = 0;
 
 public: // メンバ関数
 	/// <summary>

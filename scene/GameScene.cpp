@@ -38,7 +38,7 @@ void GameScene::Initialize() {
 	//変換行列を定数バッファに転送
 	worldTransformStage_.TransferMatrix();
 
-	//
+	//プレイヤー
 	textureHandlePlayer_ = TextureManager::Load("player.png");
 	modelPlayer_ = Model::Create();
 	worldTransformPlayer_.scale_ = {0.5f, 0.5f, 0.5f};
@@ -47,11 +47,22 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	
+	//ビーム
+	textureHandleBeam_ = TextureManager::Load("beam.png");
+	modelBeam_ = Model::Create();
+	worldTransformBeam_.scale_ = {0.5f, 0.5f, 0.5f};
+	worldTransformBeam_.Initialize();
 
+	worldTransformBeam_.translation_.x = -20;
+	worldTransformBeam_.translation_.y = -20;
+	worldTransformBeam_.translation_.z = -20;
 }
-//更新
+
+// 更新  worldTransformBeam_.translation_.z = -20;
 void GameScene::Update() { 
 	PlayerUpdate();
+	BeamUpdate();
 }
 //
 //
@@ -80,6 +91,41 @@ void GameScene::PlayerUpdate() {
 	    worldTransformPlayer_.translation_);
 	//変換行列を定数バッファに転送
 	worldTransformPlayer_.TransferMatrix();
+
+	worldTransformPlayer_.rotation_.z += 0.1f;
+}
+//ビームはここから
+
+void GameScene::BeamUpdate() { 
+	if (input_->PushKey(DIK_SPACE)) {
+
+	if (beamFlag_ == 0) {
+		worldTransformBeam_.translation_.x = worldTransformPlayer_.translation_.x;
+		worldTransformBeam_.translation_.y = worldTransformPlayer_.translation_.y;
+		worldTransformBeam_.translation_.z = worldTransformPlayer_.translation_.z;
+		beamFlag_ = 1;
+	}
+	}
+	if (beamFlag_ == 1) {
+	worldTransformBeam_.translation_.z += 0.5f;
+	if (worldTransformBeam_.translation_.z >= 40) {
+		worldTransformBeam_.translation_.x = -20;
+		worldTransformBeam_.translation_.y = -20;
+		worldTransformBeam_.translation_.z = -20;
+		beamFlag_ = 0;
+	}
+	}
+	//
+	worldTransformBeam_.matWorld_ = MakeAffineMatrix(
+		worldTransformBeam_.scale_,
+		worldTransformBeam_.rotation_,
+		worldTransformBeam_.translation_
+	);
+	worldTransformBeam_.TransferMatrix();
+
+	//回転
+	worldTransformBeam_.rotation_.x += 0.1f;
+
 }
 
 //描画
@@ -114,6 +160,7 @@ void GameScene::Draw() {
 	//ステージ
 	modelStage_->Draw(worldTransformStage_, viewProjection_, texttureHandleStage_);
 	modelPlayer_->Draw(worldTransformPlayer_, viewProjection_, textureHandlePlayer_);
+	modelBeam_->Draw(worldTransformBeam_, viewProjection_, textureHandleBeam_);
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理

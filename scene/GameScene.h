@@ -31,9 +31,17 @@ class GameScene {
 	Model* modelBeam_ = nullptr;
 	WorldTransform worldTransformBeam_;
 
+	//敵
+	uint32_t textureHandleEnemy_ = 0;
+	Model* modelEnemy_ = nullptr;
+	WorldTransform worldTransformEnemy_;
+
 	void PlayerUpdate();
 	void BeamUpdate();
 	int beamFlag_ = 0;
+	void EnemyUpdete();
+	void EnemyMove();
+	int enemyFlag_ = 0;
 
 public: // メンバ関数
 	/// <summary>

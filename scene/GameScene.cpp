@@ -57,12 +57,25 @@ void GameScene::Initialize() {
 	worldTransformBeam_.translation_.x = -20;
 	worldTransformBeam_.translation_.y = -20;
 	worldTransformBeam_.translation_.z = -20;
+
+	//敵
+	textureHandleEnemy_ = TextureManager::Load("enemy.png");
+	modelEnemy_ = Model::Create();
+	worldTransformEnemy_.scale_ = {0.5f, 0.5f, 0.5f};
+	worldTransformEnemy_.Initialize();
+	dxCommon_ = DirectXCommon::GetInstance();
+	input_ = Input::GetInstance();
+	audio_ = Audio::GetInstance();
+	//worldTransformEnemy_.translation_.x = -40;
+	//worldTransformEnemy_.translation_.y = -40;
+	//worldTransformEnemy_.translation_.z = -40;
 }
 
 // 更新  worldTransformBeam_.translation_.z = -20;
 void GameScene::Update() { 
 	PlayerUpdate();
 	BeamUpdate();
+	EnemyUpdete();
 }
 //
 //
@@ -92,7 +105,7 @@ void GameScene::PlayerUpdate() {
 	//変換行列を定数バッファに転送
 	worldTransformPlayer_.TransferMatrix();
 
-	worldTransformPlayer_.rotation_.z += 0.1f;
+	worldTransformPlayer_.rotation_.y += 0.1f;
 }
 //ビームはここから
 
@@ -127,6 +140,23 @@ void GameScene::BeamUpdate() {
 	worldTransformBeam_.rotation_.x += 0.1f;
 
 }
+void GameScene::EnemyUpdete() {
+//	if (enemyFlag_ == 0) {
+//
+//
+//	enemyFlag_ = 1;
+//	}
+//	if (enemyFlag_ == 1) {
+//	//worldTransformEnemy_.translation_.z -= 0.5f;
+//	if (worldTransformEnemy_.translation_.z <= 0) {
+//		worldTransformEnemy_.translation_.x = -40;
+//		worldTransformEnemy_.translation_.y = -40;
+//		worldTransformEnemy_.translation_.z = -40;
+//		beamFlag_ = 0;
+//	}
+//	}
+}
+//void GameScene::EnemyMove() {}
 
 //描画
 void GameScene::Draw() {
@@ -161,6 +191,7 @@ void GameScene::Draw() {
 	modelStage_->Draw(worldTransformStage_, viewProjection_, texttureHandleStage_);
 	modelPlayer_->Draw(worldTransformPlayer_, viewProjection_, textureHandlePlayer_);
 	modelBeam_->Draw(worldTransformBeam_, viewProjection_, textureHandleBeam_);
+	modelEnemy_->Draw(worldTransformEnemy_, viewProjection_, textureHandleEnemy_);
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理

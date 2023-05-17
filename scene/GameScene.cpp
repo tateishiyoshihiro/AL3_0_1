@@ -63,11 +63,8 @@ void GameScene::Initialize() {
 	modelEnemy_ = Model::Create();
 	worldTransformEnemy_.scale_ = {0.5f, 0.5f, 0.5f};
 	worldTransformEnemy_.Initialize();
-	dxCommon_ = DirectXCommon::GetInstance();
-	input_ = Input::GetInstance();
-	audio_ = Audio::GetInstance();
-	//worldTransformEnemy_.translation_.x = -40;
-	//worldTransformEnemy_.translation_.y = -40;
+	//worldTransformEnemy_.translation_.x = 10;
+	//worldTransformEnemy_.translation_.y = 10;
 	//worldTransformEnemy_.translation_.z = -40;
 }
 
@@ -122,8 +119,8 @@ void GameScene::BeamUpdate() {
 	if (beamFlag_ == 1) {
 	worldTransformBeam_.translation_.z += 0.5f;
 	if (worldTransformBeam_.translation_.z >= 40) {
-		worldTransformBeam_.translation_.x = -20;
-		worldTransformBeam_.translation_.y = -20;
+		worldTransformBeam_.translation_.x = 10;
+		worldTransformBeam_.translation_.y = 10;
 		worldTransformBeam_.translation_.z = -20;
 		beamFlag_ = 0;
 	}
@@ -141,22 +138,40 @@ void GameScene::BeamUpdate() {
 
 }
 void GameScene::EnemyUpdete() {
-//	if (enemyFlag_ == 0) {
-//
-//
-//	enemyFlag_ = 1;
-//	}
-//	if (enemyFlag_ == 1) {
-//	//worldTransformEnemy_.translation_.z -= 0.5f;
-//	if (worldTransformEnemy_.translation_.z <= 0) {
-//		worldTransformEnemy_.translation_.x = -40;
-//		worldTransformEnemy_.translation_.y = -40;
-//		worldTransformEnemy_.translation_.z = -40;
-//		beamFlag_ = 0;
-//	}
-//	}
+	EnemyMove();
+	EnemyBorn();
+	worldTransformEnemy_.matWorld_ = MakeAffineMatrix(
+	    worldTransformEnemy_.scale_,
+		worldTransformEnemy_.rotation_,
+	    worldTransformEnemy_.translation_);
+	worldTransformEnemy_.TransferMatrix();
 }
-//void GameScene::EnemyMove() {}
+void GameScene::EnemyMove() {
+	if (enemyFlag_ == 1) {
+	worldTransformEnemy_.translation_.z -= 0.5f;
+	if (worldTransformEnemy_.translation_.z <= -5) {
+
+		worldTransformEnemy_.translation_.x = -40;
+		worldTransformEnemy_.translation_.y = -40;
+		worldTransformEnemy_.translation_.z = -40;
+		
+		enemyFlag_ = 0;
+	}
+	}
+	worldTransformEnemy_.rotation_.x -= 0.1f;
+	}
+void GameScene::EnemyBorn() { 
+	if (enemyFlag_ == 0) {
+	worldTransformEnemy_.translation_.x = 0;
+	worldTransformEnemy_.translation_.y = 0;
+	worldTransformEnemy_.translation_.z = 40;
+	enemyFlag_ = 1;
+	// 乱数でX座標の指定
+	int x = rand() % 80;
+	float x2 = (float)x / 10 - 4;
+	worldTransformEnemy_.translation_.x = x2;
+	}
+}
 
 //描画
 void GameScene::Draw() {

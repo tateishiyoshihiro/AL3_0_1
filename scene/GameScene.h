@@ -41,7 +41,8 @@ class GameScene {
 	int beamFlag_ = 0;
 	void EnemyUpdete();
 	void EnemyMove();
-	int enemyFlag_ = 0;
+	void EnemyBorn();
+	int enemyFlag_ = 1;
 
 public: // メンバ関数
 	/// <summary>

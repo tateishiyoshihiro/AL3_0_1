@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "DebugText.h"
 
 /// <summary>
 /// ゲームシーン
@@ -43,6 +44,11 @@ class GameScene {
 	void EnemyMove();
 	void EnemyBorn();
 	int enemyFlag_ = 1;
+	void Collision();
+	void CollisionPlayerEnemy();
+	void CollisionBeamEnemy();
+	int gameScore_ = 0;//ゲームスコア
+	int playerLife_ = 3;//プレイヤーライフ
 
 public: // メンバ関数
 	/// <summary>
@@ -74,6 +80,7 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	DebugText* debugText_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

@@ -63,9 +63,11 @@ void GameScene::Initialize() {
 	modelEnemy_ = Model::Create();
 	worldTransformEnemy_.scale_ = {0.5f, 0.5f, 0.5f};
 	worldTransformEnemy_.Initialize();
-	//worldTransformEnemy_.translation_.x = 10;
-	//worldTransformEnemy_.translation_.y = 10;
-	//worldTransformEnemy_.translation_.z = -40;
+	worldTransformEnemy_.translation_.z = -40;
+
+	//デバッグテキスト
+	debugText_ = DebugText::GetInstance();
+	debugText_->Initialize();
 }
 
 // 更新  worldTransformBeam_.translation_.z = -20;
@@ -151,9 +153,9 @@ void GameScene::EnemyMove() {
 	worldTransformEnemy_.translation_.z -= 0.5f;
 	if (worldTransformEnemy_.translation_.z <= -5) {
 
-		worldTransformEnemy_.translation_.x = -40;
-		worldTransformEnemy_.translation_.y = -40;
-		worldTransformEnemy_.translation_.z = -40;
+		worldTransformEnemy_.translation_.x =	0;
+		worldTransformEnemy_.translation_.y = 0;
+		worldTransformEnemy_.translation_.z = 40;
 		
 		enemyFlag_ = 0;
 	}
@@ -173,6 +175,28 @@ void GameScene::EnemyBorn() {
 	}
 }
 
+//衝突判定
+void GameScene::Collision() {
+	//衝突判定(プレイヤーと敵)
+	CollisionPlayerEnemy();
+}
+
+//衝突判定(プレイヤーと敵)
+void GameScene::CollisionPlayerEnemy() {
+	//敵が存在すれば
+	if (enemyFlag_ == 1) {
+	//差を求める
+	float dx = abs(worldTransformPlayer_.translation_.x - worldTransformEnemy_.translation_.x);
+	float dz = abs(worldTransformPlayer_.translation_.z - worldTransformEnemy_.translation_.z);
+
+	//衝突したら
+	if (dx < 1 && dz < 1) {
+	//存在しない
+		enemyFlag_ = 0;
+	}
+	}
+}
+
 //描画
 void GameScene::Draw() {
 
@@ -188,6 +212,14 @@ void GameScene::Draw() {
 	//背景
 	spriteBG_->Draw();
 	
+	//ゲームスコア
+	char str[100];
+	debugText_->DrawAll();
+	sprintf_s(str, "SCORE %d", gameScore_);
+	debugText_->Print(str, 200, 10, 2);
+	sprintf_s(str, "LIFE %d", playerLife_);
+	debugText_->Print(str, 400, 10, 2);
+
 	/// </summary>
 
 	// スプライト描画後処理
@@ -208,6 +240,8 @@ void GameScene::Draw() {
 	modelBeam_->Draw(worldTransformBeam_, viewProjection_, textureHandleBeam_);
 	modelEnemy_->Draw(worldTransformEnemy_, viewProjection_, textureHandleEnemy_);
 	/// </summary>
+
+	
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

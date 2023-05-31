@@ -38,6 +38,7 @@ class GameScene {
 	WorldTransform worldTransformEnemy_;
 
 	void PlayerUpdate();
+	int playerFlag_ = 0;
 	void BeamUpdate();
 	int beamFlag_ = 0;
 	void EnemyUpdete();

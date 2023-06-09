@@ -37,7 +37,18 @@ class GameScene {
 	Model* modelEnemy_ = nullptr;
 	WorldTransform worldTransformEnemy_;
 
+	//タイトル
+	uint32_t textureHandleTitle_ = 0;
+	Sprite* spriteTitle_ = nullptr;
+	
+
+	void GamePlayUpdate();
+	void GamePlayDraw3D();
+	void GamePlayDraw2DBack();
+	void GamePlayDraw2DNear();
 	void PlayerUpdate();
+	void TitleUpdate();
+	void TitleDraw2DNear();
 	int playerFlag_ = 0;
 	void BeamUpdate();
 	int beamFlag_ = 0;
@@ -50,6 +61,7 @@ class GameScene {
 	void CollisionBeamEnemy();
 	int gameScore_ = 0;//ゲームスコア
 	int playerLife_ = 3;//プレイヤーライフ
+	int sceneMode_ = 1;
 
 public: // メンバ関数
 	/// <summary>

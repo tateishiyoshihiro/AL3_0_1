@@ -41,6 +41,9 @@ class GameScene {
 	uint32_t textureHandleTitle_ = 0;
 	Sprite* spriteTitle_ = nullptr;
 	
+	//エンター
+	uint32_t textureHandleEnter_ = 0;
+	Sprite* spriteEnter_ = nullptr;
 
 	void GamePlayUpdate();
 	void GamePlayDraw3D();
@@ -62,6 +65,7 @@ class GameScene {
 	int gameScore_ = 0;//ゲームスコア
 	int playerLife_ = 3;//プレイヤーライフ
 	int sceneMode_ = 1;
+	int gameTimer_ = 0;//ゲームタイマー
 
 public: // メンバ関数
 	/// <summary>

@@ -13,6 +13,7 @@ GameScene::GameScene() {
 GameScene::~GameScene() {
 	delete modelPlayer_;
 	delete spriteTitle_;//タイトル
+	delete spriteEnter_;
 }
 
 void GameScene::Initialize() {
@@ -73,6 +74,9 @@ void GameScene::Initialize() {
 	//タイトル
 	textureHandleTitle_ = TextureManager::Load("title.png");
 	spriteTitle_ = Sprite::Create(textureHandleTitle_, {0, 0});
+	//エンター
+	textureHandleEnter_ = TextureManager::Load("enter.png");
+	spriteEnter_ = Sprite::Create(textureHandleEnter_, {400, 500});
 }
 
 // 更新  worldTransformBeam_.translation_.z = -20;
@@ -186,9 +190,17 @@ void GameScene::TitleUpdate() {
 
 }
 void GameScene::TitleDraw2DNear() {
+	gameTimer_++;
+	if (gameTimer_ >= 40) {
+	gameTimer_ = 0;
+	}
 
 	//タイトル表示
 	spriteTitle_->Draw();
+	//エンター表示
+	if (gameTimer_ % 40 >= 20) {
+	spriteEnter_->Draw();
+	}
 }
 
 void GameScene::EnemyMove() {
@@ -314,14 +326,7 @@ void GameScene::Draw() {
 	GamePlayDraw3D();
 	break;
 	}
-	switch (sceneMode_) {
-	case 0:
-	GamePlayDraw2DNear();
-	break;
-	case 1:
-	TitleDraw2DNear();
-	break;
-	}
+	
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -334,7 +339,14 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+	switch (sceneMode_) {
+	case 0:
+	GamePlayDraw2DNear();
+	break;
+	case 1:
+	TitleDraw2DNear();
+	break;
+	}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

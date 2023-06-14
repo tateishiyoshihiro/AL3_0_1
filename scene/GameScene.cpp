@@ -186,8 +186,13 @@ void GameScene::EnemyUpdete() {
 	    worldTransformEnemy_.translation_);
 	worldTransformEnemy_.TransferMatrix();
 }
+//タイトル更新
 void GameScene::TitleUpdate() {
-
+	//エンターキーを押したとき
+	if (input_->TriggerKey(DIK_RETURN)) {
+	//モードをゲームプレイへ変更
+	sceneMode_ = 0;
+	}
 }
 void GameScene::TitleDraw2DNear() {
 	gameTimer_++;

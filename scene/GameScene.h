@@ -29,13 +29,13 @@ class GameScene {
 	WorldTransform worldTransformPlayer_;
 	// ビーム
 	uint32_t textureHandleBeam_ = 0;
-	Model* modelBeam_ = nullptr;
-	WorldTransform worldTransformBeam_;
+	Model* modelBeam_ = 0;
+	WorldTransform worldTransformBeam_[10];
 
 	//敵
 	uint32_t textureHandleEnemy_ = 0;
-	Model* modelEnemy_ = nullptr;
-	WorldTransform worldTransformEnemy_;
+	Model* modelEnemy_ = 0;
+	WorldTransform worldTransformEnemy_[10];
 
 	//タイトル
 	uint32_t textureHandleTitle_ = 0;
@@ -45,20 +45,29 @@ class GameScene {
 	uint32_t textureHandleEnter_ = 0;
 	Sprite* spriteEnter_ = nullptr;
 
+	//ゲームオーバー
+	uint32_t textureHandleGameOver_ = 0;
+	Sprite* spriteGameOver_ = nullptr;
+
 	void GamePlayUpdate();
 	void GamePlayDraw3D();
 	void GamePlayDraw2DBack();
 	void GamePlayDraw2DNear();
+	void GamePlayStart();
 	void PlayerUpdate();
 	void TitleUpdate();
 	void TitleDraw2DNear();
+	void GameOverUpdate();
+	void GameOverDraw2DNear();
 	int playerFlag_ = 0;
 	void BeamUpdate();
-	int beamFlag_ = 0;
+	void BeamBorn();
+	int beamFlag_[10] = {};
 	void EnemyUpdete();
 	void EnemyMove();
 	void EnemyBorn();
-	int enemyFlag_ = 1;
+	int enemyFlag_[10] = {};
+	float enemySpeed_[10] = {};
 	void Collision();
 	void CollisionPlayerEnemy();
 	void CollisionBeamEnemy();
@@ -66,6 +75,7 @@ class GameScene {
 	int playerLife_ = 3;//プレイヤーライフ
 	int sceneMode_ = 1;
 	int gameTimer_ = 0;//ゲームタイマー
+	int beamTimer_ = 0;
 
 public: // メンバ関数
 	/// <summary>
